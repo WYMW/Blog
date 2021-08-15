@@ -64,6 +64,54 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-快速排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Blog/2021/08/15/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2021-08-15T10:22:28.000Z" itemprop="datePublished">2021-08-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Blog/2021/08/15/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">快速排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="原理：-把数字A-p-r-划分成两个子数组-A-p-q-1-和-A-q-1-r-使得-A-p-q-1-中的值都小于-A-q-A-q-1-r-中的值都大于A-q-递归调用分割方法，直至不能再分割。"><a href="#原理：-把数字A-p-r-划分成两个子数组-A-p-q-1-和-A-q-1-r-使得-A-p-q-1-中的值都小于-A-q-A-q-1-r-中的值都大于A-q-递归调用分割方法，直至不能再分割。" class="headerlink" title="原理： 把数字A[p..r]划分成两个子数组 A[p..q -1 ] 和 A[q + 1 .. r],  使得 A[p..q -1 ]中的值都小于 A[q], A[q + 1 .. r]中的值都大于A[q], 递归调用分割方法，直至不能再分割。"></a>原理： 把数字A[p..r]划分成两个子数组 A[p..q -1 ] 和 A[q + 1 .. r],  使得 A[p..q -1 ]中的值都小于 A[q], A[q + 1 .. r]中的值都大于A[q], 递归调用分割方法，直至不能再分割。</h4><h3 id="第一步实现数组的分割"><a href="#第一步实现数组的分割" class="headerlink" title="第一步实现数组的分割"></a>第一步实现数组的分割</h3><h4 id="依次用数组中的值与分界值进行比较，如果比分界值小，把它与待替换的位置交换，然后待替换向后移动。-直到遍历完成，然后交换分界值与最后一次替换的下一个位置。"><a href="#依次用数组中的值与分界值进行比较，如果比分界值小，把它与待替换的位置交换，然后待替换向后移动。-直到遍历完成，然后交换分界值与最后一次替换的下一个位置。" class="headerlink" title="依次用数组中的值与分界值进行比较，如果比分界值小，把它与待替换的位置交换，然后待替换向后移动。 直到遍历完成，然后交换分界值与最后一次替换的下一个位置。"></a>依次用数组中的值与分界值进行比较，如果比分界值小，把它与待替换的位置交换，然后待替换向后移动。 直到遍历完成，然后交换分界值与最后一次替换的下一个位置。</h4><p>分界值： 数组的最后一个元素</p>
+<p>待替换： 初始值为 -1， 意味着当前不需要替换</p>
+<p><img src="/Blog/images/quickly-sort1.png" alt="快速排序"></p>
+<p>如上图所示， 首先用 4 和 5 比较， 由于第一个元素 5 &gt; 4, 不做任何操作，只是把i向后移一位。 接下来比较 2 和 4，由于 2 &lt; 4, 根据规则，需要交换，</p>
+<p>需要替换的位置 cp  向前 移动 一位 + 1，变成0，交换 a[i]和 a[cp]的值。依次执行，至到遍历完数组中除分界值的所有元素。然后交换分界4与cp的值5</p>
+<p>最后形成 2 1 3 2 4 6 7 5， 这样以4为分界点，4前面的都比4小，4后面的都比4大。</p>
+<p><img src="/Blog/images/quickly-sort2.png" alt="快速排序"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>  <span class="title">partition</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> changePosition = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> compareValue = a[end];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt; end; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span>(a[i] &lt;= compareValue) &#123;</span><br><span class="line">            changePosition += <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (changePosition + start != i) &#123;</span><br><span class="line">                <span class="keyword">int</span> t = a[start + changePosition];</span><br><span class="line">                a[start + changePosition] = a[i];</span><br><span class="line">                a[i] = t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ((changePosition != <span class="number">-1</span> || a[changePosition + start + <span class="number">1</span>] &gt; a[end] )  &amp;&amp; changePosition + start + <span class="number">1</span> &lt; end) &#123;</span><br><span class="line">        <span class="keyword">int</span> t = a[changePosition + start + <span class="number">1</span>];</span><br><span class="line">        a[changePosition + start + <span class="number">1</span>] = a[end];</span><br><span class="line">        a[end] = t;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> changePosition + start + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第二步递归数组的分割"><a href="#第二步递归数组的分割" class="headerlink" title="第二步递归数组的分割"></a>第二步递归数组的分割</h2><p>当进行一次第一步的数组分割时，我们会第到一个分割点，分割点前后分成两个子数组。我们对两个子数组执行相同的操作。这样就形成了快速排序的递归操作。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">quicklySort</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (start &lt; end) &#123;   <span class="comment">//递归结束条件</span></span><br><span class="line">        <span class="keyword">int</span> mid = partition(a, start, end);  <span class="comment">// 找到分割点</span></span><br><span class="line">        quicklySort(a, start, mid - <span class="number">1</span>); <span class="comment">// 对分割点左边的子数组进行快速排序</span></span><br><span class="line">        quicklySort(a, mid + <span class="number">1</span>, end);  <span class="comment">//对分割点右边的子数组进行快速排序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wymw.github.io/Blog/2021/08/15/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" data-id="cksd2vaxn0000g7b1gypb5vl2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-堆排序" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/Blog/2021/07/31/%E5%A0%86%E6%8E%92%E5%BA%8F/" class="article-date">
@@ -221,7 +269,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/Blog/archives/2021/07/">July 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/Blog/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/Blog/archives/2021/07/">July 2021</a></li></ul>
     </div>
   </div>
 
@@ -232,6 +280,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/Blog/2021/08/15/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">快速排序</a>
+          </li>
         
           <li>
             <a href="/Blog/2021/07/31/%E5%A0%86%E6%8E%92%E5%BA%8F/">堆排序</a>
