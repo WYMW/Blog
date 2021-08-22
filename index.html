@@ -64,6 +64,69 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-二叉树-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Blog/2021/08/22/%E4%BA%8C%E5%8F%89%E6%A0%91-1/" class="article-date">
+  <time datetime="2021-08-22T12:34:03.000Z" itemprop="datePublished">2021-08-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Blog/2021/08/22/%E4%BA%8C%E5%8F%89%E6%A0%91-1/">二叉树 - 1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="定义：结点的有限集，它或者为空，或者由一个根和两棵称作左、右子树的不相交的二叉树组成。"><a href="#定义：结点的有限集，它或者为空，或者由一个根和两棵称作左、右子树的不相交的二叉树组成。" class="headerlink" title="定义：结点的有限集，它或者为空，或者由一个根和两棵称作左、右子树的不相交的二叉树组成。"></a>定义：结点的有限集，它或者为空，或者由一个根和两棵称作左、右子树的不相交的二叉树组成。</h3><h3 id=""><a href="#" class="headerlink" title=""></a><img src="/Blog/images/binaryTree.png"></h3><h3 id="创建："><a href="#创建：" class="headerlink" title="创建："></a>创建：</h3><h4 id="我们首先需要一个用来表示二叉树中每一个结点的结构体。"><a href="#我们首先需要一个用来表示二叉树中每一个结点的结构体。" class="headerlink" title="我们首先需要一个用来表示二叉树中每一个结点的结构体。"></a>我们首先需要一个用来表示二叉树中每一个结点的结构体。</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span>  <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">double</span>  value;      <span class="comment">// 用来存放所有表示的值</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">leftLeaf</span>;</span>  <span class="comment">//左子树</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">rightLeaf</span>;</span> <span class="comment">// 右子树</span></span><br><span class="line">&#125; BinaryTreeNode;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>  <span class="title">Node</span> *<span class="title">BTN</span>;</span>  </span><br></pre></td></tr></table></figure>
+
+<p>对于二叉树的创建我们一般会把所要的值放在一个数组中，然后通过把数组中的值放在相应的位置来实现一棵二叉数。如下面一棵二叉树</p>
+<p><img src="/Blog/images/binaryTree-1.png"></p>
+<p>由上面的图我们可以很明显的看出，二叉树的结构就是一个标准的递归结构，每一个结点都可以看作是以此为根的二叉树。所以创建二叉树用递归的方式再合适不过了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BTN <span class="title">createBinaryTreeRecursive</span><span class="params">(<span class="keyword">double</span> *a, <span class="keyword">int</span> i, <span class="keyword">int</span> length)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= length) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    BTN node = (BinaryTreeNode *) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(BinaryTreeNode));</span><br><span class="line">    node -&gt; value = a[i];</span><br><span class="line">    node -&gt; leftLeaf = createBinaryTreeRecursive(a, <span class="number">2</span> * i + <span class="number">1</span>, length);</span><br><span class="line">    node -&gt; rightLeaf = createBinaryTreeRecursive(a, <span class="number">2</span> * i + <span class="number">2</span>, length);</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以把一个结点理解为一个人，这个人有三个属性，他自己的值， 以及他的左膀和右臂，当然他可能没有左膀和右臂。每个人要做的事情就是设置自己的值和左膀和右臂。至于左膀和右臂他们自己的值以及他们的左膀和右臂需要他们自己设置。 createBinaryTreeRecursive 就相当于一个人调用这个函数来设置自己的值和左膀和右臂，然后把自己的地址返给自己的主人。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BTN node = (BinaryTreeNode *) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(BinaryTreeNode));  <span class="comment">// 创建一个人</span></span><br><span class="line">node -&gt; value = a[i];   <span class="comment">//给这个自己一个值</span></span><br><span class="line">node -&gt; leftLeaf = createBinaryTreeRecursive(a, <span class="number">2</span> * i + <span class="number">1</span>, length);   <span class="comment">//设置自己的左膀，告诉左膀自己去设置自己的属性和左膀和</span></span><br><span class="line">node -&gt; rightLeaf = createBinaryTreeRecursive(a, <span class="number">2</span> * i + <span class="number">2</span>, length);  <span class="comment">//设置自己的右臂，告诉右臂自己去设置自己的属性和左膀和右臂</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>当然我们也可以根据数据下标和二叉树的对应关系来创建二叉树。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BinaryTreeNode* <span class="title">createBinaryTree</span><span class="params">(<span class="keyword">double</span> *a, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    BinaryTreeNode  *head = <span class="literal">NULL</span>;</span><br><span class="line">    BinaryTreeNode nodes[<span class="number">6</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">        nodes[i].value = a[i];</span><br><span class="line">        nodes[i].leftLeaf = <span class="literal">NULL</span>;</span><br><span class="line">        nodes[i].rightLeaf = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n ; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="number">2</span> * i &lt;= n) &#123;</span><br><span class="line">            nodes[i - <span class="number">1</span>].leftLeaf = &amp;nodes[<span class="number">2</span> * i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="number">2</span> * i + <span class="number">1</span> &lt;= n) &#123;</span><br><span class="line">            nodes[i - <span class="number">1</span>] .rightLeaf = &amp;nodes[<span class="number">2</span> * i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="遍历：前序，-中序，-后序"><a href="#遍历：前序，-中序，-后序" class="headerlink" title="遍历：前序， 中序， 后序"></a>遍历：前序， 中序， 后序</h3><p>所谓的前中后都是相对于根节点来说的。  以上面的二叉树为例</p>
+<h4 id="前序-根-gt-左-gt-右-1-gt-2-gt-4-gt-5-gt-3-gt-6"><a href="#前序-根-gt-左-gt-右-1-gt-2-gt-4-gt-5-gt-3-gt-6" class="headerlink" title="前序     根  -&gt;  左  -&gt; 右    1 -&gt;  2 -&gt; 4 -&gt; 5 -&gt; 3 -&gt; 6"></a>前序     根  -&gt;  左  -&gt; 右    1 -&gt;  2 -&gt; 4 -&gt; 5 -&gt; 3 -&gt; 6</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">preprint</span><span class="params">(BinaryTreeNode *header)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (header) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%f \n&quot;</span>, header-&gt;value);  <span class="comment">// 先输出根</span></span><br><span class="line">        preprint(header -&gt; leftLeaf);    <span class="comment">// 对左子树也执行相同的操作</span></span><br><span class="line">        preprint(header -&gt; rightLeaf);  <span class="comment">//对右子树也执行相同的操作</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="中序-左-gt-根-gt-右-4-gt-2-gt-5-gt-1-gt-6-gt-3"><a href="#中序-左-gt-根-gt-右-4-gt-2-gt-5-gt-1-gt-6-gt-3" class="headerlink" title="中序     左  -&gt;  根  -&gt; 右    4 -&gt; 2 -&gt; 5 -&gt; 1 -&gt; 6 -&gt; 3"></a>中序     左  -&gt;  根  -&gt; 右    4 -&gt; 2 -&gt; 5 -&gt; 1 -&gt; 6 -&gt; 3</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">midPrint</span><span class="params">(BinaryTreeNode *header)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (header) &#123;</span><br><span class="line">        midPrint(header -&gt; leftLeaf);   <span class="comment">// 先遍历左子树</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, header -&gt; value); <span class="comment">// 输出根</span></span><br><span class="line">        midPrint(header -&gt; rightLeaf);  <span class="comment">// 遍历右子树</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后序-左-gt-右-gt-根-4-gt-5-gt-2-gt-6-gt-3-gt-1"><a href="#后序-左-gt-右-gt-根-4-gt-5-gt-2-gt-6-gt-3-gt-1" class="headerlink" title="后序     左  -&gt;  右  -&gt; 根   4 -&gt; 5 -&gt; 2 -&gt;6 -&gt; 3 -&gt; 1"></a>后序     左  -&gt;  右  -&gt; 根   4 -&gt; 5 -&gt; 2 -&gt;6 -&gt; 3 -&gt; 1</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lastPrint</span><span class="params">(BinaryTreeNode *header)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (header) &#123;</span><br><span class="line">        lastPrint(header -&gt; leftLeaf);  <span class="comment">//先遍历左子树</span></span><br><span class="line">        lastPrint(header -&gt; rightLeaf);<span class="comment">// 遍历右子树</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, header -&gt; value);  <span class="comment">// 输出根</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="这中遍历有什么用呢？-来个简单的例子"><a href="#这中遍历有什么用呢？-来个简单的例子" class="headerlink" title="这中遍历有什么用呢？ 来个简单的例子"></a>这中遍历有什么用呢？ 来个简单的例子</h3><p>对于这个数学公式 1 - 3 (8 / 4 + 6 / 3).，我们用二叉树怎么表示？</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wymw.github.io/Blog/2021/08/22/%E4%BA%8C%E5%8F%89%E6%A0%91-1/" data-id="cksn72gll0000ayb1a5ykam9z" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-快速排序" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/Blog/2021/08/15/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="article-date">
@@ -280,6 +343,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/Blog/2021/08/22/%E4%BA%8C%E5%8F%89%E6%A0%91-1/">二叉树 - 1</a>
+          </li>
         
           <li>
             <a href="/Blog/2021/08/15/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">快速排序</a>
